@@ -34,6 +34,7 @@ class PIT:
         self.count = u32(data[4:8])
         self.dummy = data[8:28]
         self.partitions = self.__parse_part_info(data[28:])
+        self.signature = data[-256:].encode('hex')
 
     def __parse_part_info(self, data):
         result = []
@@ -59,7 +60,6 @@ with open(argv[1], 'rb') as fh:
     print "Magic: " + hex(pit.magic)
     print "Count: " + str(pit.count)
 
-
     for i in xrange(pit.count):
         part = pit.partitions[i]
         print "---------------------"
@@ -73,3 +73,6 @@ with open(argv[1], 'rb') as fh:
         print "Blknum: " + str(part.blknum)
         print "Offset: " + str(part.offset)
         print "filesize: " + str(part.filesize)
+
+    print "---------------------"
+    print "Signature: " + pit.signature
